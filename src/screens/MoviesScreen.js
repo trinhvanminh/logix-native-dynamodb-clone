@@ -1,15 +1,36 @@
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import NowShowingMovies from "../components/NowShowingMovies";
 import PopularMovies from "../components/PopularMovies";
+import { getMoviesApi } from "../services/Movies";
 
 const MoviesScreen = () => {
+  const [nowShowingMoviesData, setNowShowingMoviesData] = useState();
+  const [popularMoviesData, setPopularMoviesData] = useState();
+
+  useEffect(() => {
+    getMoviesApi().then(({ response }) => {
+      if (response) {
+        const movies = response.movies;
+        setNowShowingMoviesData(movies.slice(0, 5));
+        setPopularMoviesData(movies.slice(5, 10));
+      }
+    });
+  }, []);
+
   const handleSeeMorePress = () => {
     console.log("See More Pressed");
   };
   return (
     <ScrollView style={styles.container}>
-      <NowShowingMovies handleSeeMorePress={handleSeeMorePress} />
-      <PopularMovies handleSeeMorePress={handleSeeMorePress} />
+      <NowShowingMovies
+        handleSeeMorePress={handleSeeMorePress}
+        nowShowingMoviesData={nowShowingMoviesData}
+      />
+      <PopularMovies
+        handleSeeMorePress={handleSeeMorePress}
+        popularMoviesData={popularMoviesData}
+      />
     </ScrollView>
   );
 };

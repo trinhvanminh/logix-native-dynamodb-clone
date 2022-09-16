@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   chip: {
     backgroundColor: "#DBE3FF",
     borderRadius: 100,
-    width: 61,
     height: 18,
     justifyContent: "center",
     marginRight: 8,
@@ -29,6 +28,7 @@ const styles = StyleSheet.create({
   chipText: {
     fontWeight: "400",
     fontSize: 8,
+    height: 13,
     lineHeight: 10,
     letterSpacing: 1,
     color: "#88A4E8",

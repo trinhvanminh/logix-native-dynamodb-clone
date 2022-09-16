@@ -1,29 +1,33 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 
-const CatogoryTitle = ({ title, buttonText = "See more", onButtonPress }) => {
+const CategoryTitle = ({
+  title,
+  buttonText = "See more",
+  onButtonPress,
+  style,
+}) => {
   const handleButtonPress = () => {
     onButtonPress();
   };
   return (
-    <View style={styles.titleWrapper}>
+    <View style={[styles.titleWrapper, style]}>
       <Text style={styles.titleText}>{title}</Text>
-      <Button
-        mode="elevated"
-        onPress={() => console.log("Pressed")}
-        contentStyle={styles.seeMoreButton}
-        labelStyle={styles.seeMoreButtonText}
-      >
-        {buttonText}
-      </Button>
+      {onButtonPress && (
+        <Button
+          mode="text"
+          onPress={handleButtonPress}
+          contentStyle={styles.seeMoreButton}
+          labelStyle={styles.seeMoreButtonText}
+        >
+          {buttonText}
+        </Button>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-  },
   titleWrapper: {
     justifyContent: "space-between",
     flexDirection: "row",
@@ -44,7 +48,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVerticall: 4,
     height: 21,
-    width: 61,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -58,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CatogoryTitle;
+export default CategoryTitle;

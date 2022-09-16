@@ -1,9 +1,9 @@
 import { FlatList, StyleSheet, View } from "react-native";
 import Tag from "./Tag";
 
-const TagList = ({ tags }) => {
+const TagList = ({ tags, style }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <FlatList
         data={tags}
         renderItem={({ item }) => (

@@ -1,18 +1,16 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import CatogoryTitle from "./CategoryTitle";
+import CategoryTitle from "./CategoryTitle";
 import VerticalMovieCard from "./VerticalMovieCard";
 
-const NowShowingMovies = ({ handleSeeMorePress }) => {
+const NowShowingMovies = ({ handleSeeMorePress, nowShowingMoviesData }) => {
   return (
     <View>
-      <CatogoryTitle title="Now Showing" onButtonPress={handleSeeMorePress} />
+      <CategoryTitle title="Now Showing" onButtonPress={handleSeeMorePress} />
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <VerticalMovieCard />
-        <VerticalMovieCard />
-        <VerticalMovieCard />
-        <VerticalMovieCard />
-        <VerticalMovieCard />
+        {nowShowingMoviesData?.map((movie, index) => {
+          return <VerticalMovieCard movie={movie} key={index} />;
+        })}
       </ScrollView>
     </View>
   );

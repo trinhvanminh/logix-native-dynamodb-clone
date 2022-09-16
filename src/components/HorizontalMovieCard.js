@@ -3,14 +3,14 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import { fakeMovieImg } from "../constants/base64Img";
+import Imdb from "./Imdb";
 import TagList from "./TagList";
 
-const HorizontalMovieCard = () => {
+const HorizontalMovieCard = ({ movie: movieData }) => {
   const navigation = useNavigation();
   const movie = {
-    id: 12,
-    title: "Venom Let There Be Carnage",
-    uri: fakeMovieImg,
+    ...movieData,
+    uri: movieData?.thumbnail_url,
     imdb: "6.4/10",
     tags: ["HORROR", "MYSTERY", "THRILLER"],
     length: "1h 47m",
@@ -21,7 +21,7 @@ const HorizontalMovieCard = () => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Details", {
-            movieId: movie.id,
+            movie,
           })
         }
       >
@@ -34,16 +34,7 @@ const HorizontalMovieCard = () => {
       </TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.title}>{movie.title}</Text>
-        <View style={styles.wrapper}>
-          <IconButton
-            icon="star"
-            iconColor="#FFC319"
-            size={14}
-            onPress={() => console.log("Pressed")}
-            style={styles.starIcon}
-          />
-          <Text style={styles.imdbText}>{movie.imdb} IMDb</Text>
-        </View>
+        <Imdb imdb={movie.imdb} />
         <TagList tags={movie.tags} />
         <View style={styles.wrapper}>
           <IconButton
@@ -83,12 +74,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 8,
-  },
-  starIcon: {
-    width: 12,
-    height: 16,
-    margin: 0,
-    marginRight: 4,
   },
   clockTimeThreeIcon: {
     width: 12,

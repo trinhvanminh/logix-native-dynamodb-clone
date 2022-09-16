@@ -1,19 +1,15 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import CatogoryTitle from "./CategoryTitle";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import CategoryTitle from "./CategoryTitle";
 import HorizontalMovieCard from "./HorizontalMovieCard";
 
-const PopularMovies = ({ handleSeeMorePress }) => {
+const PopularMovies = ({ handleSeeMorePress, popularMoviesData }) => {
   return (
     <View>
-      <CatogoryTitle title="Popular" onButtonPress={handleSeeMorePress} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <HorizontalMovieCard />
-        <HorizontalMovieCard />
-        <HorizontalMovieCard />
-        <HorizontalMovieCard />
-        <HorizontalMovieCard />
-      </ScrollView>
+      <CategoryTitle title="Popular" onButtonPress={handleSeeMorePress} />
+      {popularMoviesData?.map((movie, index) => (
+        <HorizontalMovieCard movie={movie} key={index} />
+      ))}
     </View>
   );
 };

@@ -1,14 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { IconButton } from "react-native-paper";
+import Imdb from "./Imdb";
 
-const VerticalMovieCard = () => {
+const VerticalMovieCard = ({ movie: movieData }) => {
   const navigation = useNavigation();
   const movie = {
-    id: 1,
-    title: "Spiderman: No Way Home",
-    uri: "https://lumiere-a.akamaihd.net/v1/images/p_avengersendgame_19751_e14a0104.jpeg?region=0,0,540,810&width=480",
+    ...movieData,
+    uri: movieData?.thumbnail_url,
     imdb: "9.1/10",
   };
   return (
@@ -16,7 +15,7 @@ const VerticalMovieCard = () => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("Details", {
-            movieId: movie.id,
+            movie,
           })
         }
       >
@@ -28,16 +27,7 @@ const VerticalMovieCard = () => {
         />
       </TouchableOpacity>
       <Text style={styles.title}>{movie.title}</Text>
-      <View style={styles.imdbWrapper}>
-        <IconButton
-          icon="star"
-          iconColor="#FFC319"
-          size={14}
-          onPress={() => console.log("Pressed")}
-          style={styles.starIcon}
-        />
-        <Text style={styles.imdbText}>{movie.imdb} IMDb</Text>
-      </View>
+      <Imdb imdb={movie.imdb} />
     </View>
   );
 };
@@ -58,23 +48,6 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "600",
     fontSize: 14,
-    letterSpacing: 1,
-  },
-  imdbWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 8,
-  },
-  starIcon: {
-    width: 12,
-    height: 16,
-    margin: 0,
-    marginRight: 4,
-  },
-  imdbText: {
-    fontWeight: "400",
-    fontSize: 12,
-    color: "#9C9C9C",
     letterSpacing: 1,
   },
 });

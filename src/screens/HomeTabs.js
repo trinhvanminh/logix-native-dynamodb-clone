@@ -1,15 +1,30 @@
 import { FontAwesome5, Fontisto, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, Pressable, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 import LogixLogo from "../assets/img/logix-logo.png";
 import MenuIcon from "../components/svgs/MenuIcon";
 import MoviesScreen from "./MoviesScreen";
 import ProfileScreen from "./ProfileScreen";
 import SavedScreen from "./SavedScreen";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getData } from "../helpers/AsyncStorage";
+import { setAuthenticated } from "../store/authReducer";
 
 const Tab = createBottomTabNavigator();
 
 const HomeTabs = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getData("token").then((token) => {
+      if (token) {
+        dispatch(setAuthenticated(true));
+        return;
+      }
+      dispatch(setAuthenticated(false));
+    });
+  }, [dispatch]);
+
   const mainScreenOptions = (navigation) => {
     return {
       headerLeft: () => (
@@ -36,6 +51,7 @@ const HomeTabs = () => {
       ),
     };
   };
+
   return (
     <Tab.Navigator
       initialRouteName="Movies"
