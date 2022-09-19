@@ -2,9 +2,13 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button, Divider, Menu, Provider } from "react-native-paper";
+import { Divider, Menu } from "react-native-paper";
 
-const CustomHeader = ({ headerStyle }) => {
+const CustomHeader = ({
+  headerStyle,
+  buttonColor = "black",
+  hasMenu = false,
+}) => {
   const navigation = useNavigation();
   const [visible, setVisible] = React.useState(false);
 
@@ -17,24 +21,26 @@ const CustomHeader = ({ headerStyle }) => {
         style={{ marginLeft: 16 }}
         onPress={() => navigation.goBack()}
       >
-        <Ionicons name="arrow-back" size={24} color="white" />
+        <Ionicons name="arrow-back" size={24} color={buttonColor} />
       </TouchableOpacity>
 
-      <Menu
-        visible={visible}
-        onDismiss={closeMenu}
-        style={{ top: 94 }}
-        anchor={
-          <TouchableOpacity style={{ marginRight: 16 }} onPress={openMenu}>
-            <MaterialIcons name="more-horiz" size={24} color="white" />
-          </TouchableOpacity>
-        }
-      >
-        <Menu.Item onPress={() => {}} title="Item 1" />
-        <Menu.Item onPress={() => {}} title="Item 2" />
-        <Divider />
-        <Menu.Item onPress={() => {}} title="Item 3" />
-      </Menu>
+      {hasMenu && (
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          style={{ top: 94 }}
+          anchor={
+            <TouchableOpacity style={{ marginRight: 16 }} onPress={openMenu}>
+              <MaterialIcons name="more-horiz" size={24} color={buttonColor} />
+            </TouchableOpacity>
+          }
+        >
+          <Menu.Item onPress={() => {}} title="Item 1" />
+          <Menu.Item onPress={() => {}} title="Item 2" />
+          <Divider />
+          <Menu.Item onPress={() => {}} title="Item 3" />
+        </Menu>
+      )}
     </View>
   );
 };

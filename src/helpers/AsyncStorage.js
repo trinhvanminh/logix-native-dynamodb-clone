@@ -33,3 +33,11 @@ export const getObjectData = async (key) => {
     console.log(e);
   }
 };
+
+export const clearData = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    console.log(e);
+  }
+};

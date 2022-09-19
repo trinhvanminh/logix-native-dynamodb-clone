@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 import NowShowingMovies from "../components/NowShowingMovies";
 import PopularMovies from "../components/PopularMovies";
 import { getMoviesApi } from "../services/Movies";
@@ -7,6 +8,7 @@ import { getMoviesApi } from "../services/Movies";
 const MoviesScreen = () => {
   const [nowShowingMoviesData, setNowShowingMoviesData] = useState();
   const [popularMoviesData, setPopularMoviesData] = useState();
+  const isAuthenticated = useSelector((state) => state.auth.authenticated);
 
   useEffect(() => {
     getMoviesApi().then(({ response }) => {
@@ -16,7 +18,7 @@ const MoviesScreen = () => {
         setPopularMoviesData(movies.slice(5, 10));
       }
     });
-  }, []);
+  }, [isAuthenticated]);
 
   const handleSeeMorePress = () => {
     console.log("See More Pressed");

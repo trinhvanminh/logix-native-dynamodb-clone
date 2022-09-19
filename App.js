@@ -6,9 +6,9 @@ import {
   Provider as PaperProvider,
 } from "react-native-paper";
 import { Provider } from "react-redux";
-import AuthScreen from "./src/screens/AuthScreen";
 import DetailsScreen from "./src/screens/DetailsScreen";
 import HomeTabs from "./src/screens/HomeTabs";
+import LoginScreen from "./src/screens/LoginScreen";
 import store from "./src/store";
 
 const theme = {
@@ -34,7 +34,7 @@ function App() {
           >
             <Stack.Screen name="Home" component={HomeTabs} />
             <Stack.Screen name="Details" component={DetailsScreen} />
-            <Stack.Screen name="Auth" component={AuthScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

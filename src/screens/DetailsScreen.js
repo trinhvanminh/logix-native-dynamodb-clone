@@ -1,7 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import {
+  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -11,19 +14,47 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
 import CategoryTitle from "../components/CategoryTitle";
 import CustomHeader from "../components/CustomHeader";
 import Imdb from "../components/Imdb";
 import PlayButton from "../components/PlayButton";
 import TagList from "../components/TagList";
 import { movie as fakeMovieData } from "../constants/fakeMovieDetail";
+import { createOrUpdateRateApi } from "../services/Rate";
 
-export default function DetailsScreen({ route }) {
+const mainHeight = Dimensions.get("window").height - 180;
+
+export default function DetailsScreen({ route, navigation }) {
+  const [isSave, setIsSave] = useState(false);
+  const isAuthenticated = useSelector((state) => state.auth.authenticated);
   const movie = {
     ...fakeMovieData,
     ...route.params?.movie,
   };
+
+  useEffect(() => {
+    if (route?.params?.movie) {
+      setIsSave(route.params.movie?.my_rate_status > 0);
+    }
+  }, [route, isAuthenticated]);
+
   const handleCastSeeMore = () => console.log("cast: seemore button pressed");
+  const toggleSaveMovie = () => {
+    if (!isAuthenticated) {
+      navigation.navigate("Login");
+      return;
+    }
+    setIsSave(!isSave);
+    createOrUpdateRateApi({
+      movie_id: movie?._id || movie?.id,
+      rate_status: isSave ? 0 : 1,
+    }).then(({ response }) => {
+      if (!response) {
+        setIsSave(movie.my_rate_status > 0 || false);
+      }
+    });
+  };
   return (
     <View>
       <StatusBar style="light" />
@@ -34,7 +65,11 @@ export default function DetailsScreen({ route }) {
           height: 300,
         }}
       >
-        <CustomHeader headerStyle={{ marginBottom: 24 }} />
+        <CustomHeader
+          headerStyle={{ marginBottom: 24 }}
+          buttonColor="white"
+          hasMenu
+        />
         <PlayButton text="Play Trailer" />
       </ImageBackground>
       <ScrollView style={styles.main}>
@@ -42,8 +77,12 @@ export default function DetailsScreen({ route }) {
           <Text style={styles.title} numberOfLines={2}>
             {movie.title}
           </Text>
-          <TouchableOpacity>
-            <MaterialIcons name="favorite" color={"grey"} size={28} />
+          <TouchableOpacity onPress={toggleSaveMovie}>
+            <MaterialIcons
+              name="favorite"
+              color={isSave ? "rgb(255,66,66)" : "grey"}
+              size={28}
+            />
           </TouchableOpacity>
         </View>
         <Imdb imdb={movie.imdb} />
@@ -91,6 +130,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     overflow: "hidden",
+    backgroundColor: "white",
+    position: "absolute",
+    right: 0,
+    left: 0,
+    top: 240,
+    height: mainHeight,
   },
   // title
   titleWrapper: {
